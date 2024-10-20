@@ -1,0 +1,49 @@
+import matplotlib.pyplot as plt
+from scipy import stats
+import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+# Sample Data Points
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+
+slope, intercept, r, p, std_err = stats.linregress(x, y)
+
+def func(x):
+  return slope * x + intercept
+
+#Line of Best Fit
+mymodel = list(map(func, x))
+
+#Scatter Plot of Data
+plt.scatter(x, y)
+plt.plot(x, mymodel)
+plt.show()
+
+# Generate some sample data
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10])
+y = np.array([2, 6, 12, 20, 30, 45, 23, 67, 8, 150, 12])  # y = x^2 + x
+
+# Create polynomial features
+poly = PolynomialFeatures(degree=2)
+x_poly = poly.fit_transform(x.reshape(-1, 1))
+
+# Fit linear regression model
+model = LinearRegression()
+model.fit(x_poly, y)
+
+# Make predictions
+y_pred = model.predict(x_poly)
+
+# Plot the results
+plt.scatter(x, y, color='blue', label='Data')
+plt.plot(x, y_pred, color='red', label='Regression')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.show()
+
+# Print coefficients
+print('Coefficients:', model.coef_)
+print('Intercept:', model.intercept_)
